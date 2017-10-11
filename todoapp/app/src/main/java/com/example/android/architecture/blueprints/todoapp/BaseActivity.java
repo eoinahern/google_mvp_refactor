@@ -21,6 +21,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 			setContentView(layout);
 			ButterKnife.bind(this);
 		}
+
+		inject();
 	}
 
 	protected void setUpToolbar() {
@@ -32,4 +34,5 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	public abstract int getChildLayout();
 
+	public abstract void  inject();
 }

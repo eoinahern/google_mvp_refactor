@@ -21,17 +21,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.android.architecture.blueprints.todoapp.DI.annotation.scope.PerScreen;
 import com.example.android.architecture.blueprints.todoapp.UseCase;
 import com.example.android.architecture.blueprints.todoapp.UseCaseHandler;
 import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.GetTask;
 import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.SaveTask;
 import com.example.android.architecture.blueprints.todoapp.tasks.domain.model.Task;
 
+import javax.inject.Inject;
+
 /**
  * Listens to user actions from the UI ({@link AddEditTaskFragment}), retrieves the data and
  * updates
  * the UI as required.
  */
+
+@PerScreen
 public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
 
     private final AddEditTaskContract.View mAddTaskView;
@@ -51,6 +56,8 @@ public class AddEditTaskPresenter implements AddEditTaskContract.Presenter {
      * @param taskId      ID of the task to edit or null for a new task
      * @param addTaskView the add/edit view
      */
+
+    @Inject
     public AddEditTaskPresenter(@NonNull UseCaseHandler useCaseHandler, @Nullable String taskId,
             @NonNull AddEditTaskContract.View addTaskView, @NonNull GetTask getTask,
             @NonNull SaveTask saveTask) {

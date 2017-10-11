@@ -31,6 +31,8 @@ import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 /**
@@ -42,9 +44,9 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
 	@BindView(R.id.add_task_title) TextView mTitle;
 	@BindView(R.id.add_task_description) TextView mDescription;
 
+	@Inject AddEditTaskPresenter presenter;
 
-
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -90,6 +92,10 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
 	@Override
 	public int getChildLayout() {
 		return R.layout.addtask_act;
+	}
+
+	@Override public void inject() {
+
 	}
 
 	private void setTitleText() {
