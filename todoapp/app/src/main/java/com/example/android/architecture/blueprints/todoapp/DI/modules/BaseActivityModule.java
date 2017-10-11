@@ -1,8 +1,23 @@
 package com.example.android.architecture.blueprints.todoapp.DI.modules;
 
-/**
- * Created by eoin_a on 11/10/2017.
- */
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
+import com.example.android.architecture.blueprints.todoapp.DI.annotation.scope.PerScreen;
 
-public class BaseActivityModule {
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public abstract class BaseActivityModule<T extends BaseActivity> {
+
+	private final T activity;
+
+	public BaseActivityModule(T activity) {
+		this.activity = activity;
+	}
+
+	@Provides
+	@PerScreen
+	public T activity() {
+		return activity;
+	}
 }

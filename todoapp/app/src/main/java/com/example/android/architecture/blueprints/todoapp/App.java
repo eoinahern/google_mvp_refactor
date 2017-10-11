@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.android.architecture.blueprints.todoapp.DI.components.ApplicationComponent;
+import com.example.android.architecture.blueprints.todoapp.DI.components.DaggerApplicationComponent;
 
 public class App extends Application {
 
@@ -21,10 +22,9 @@ public class App extends Application {
 
 	public ApplicationComponent getApplicationComponent() {
 
-
 		if(component == null) {
-			component =
-
+			component = DaggerApplicationComponent.builder()
+					.build();
 		}
 
 		return component;

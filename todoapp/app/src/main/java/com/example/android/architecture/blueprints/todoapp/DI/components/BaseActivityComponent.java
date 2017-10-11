@@ -1,8 +1,8 @@
 package com.example.android.architecture.blueprints.todoapp.DI.components;
 
-/**
- * Created by eoin_a on 11/10/2017.
- */
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 
-public interface BaseActivityComponent {
+public interface BaseActivityComponent<T extends BaseActivity> {
+
+	void inject(T activity);
 }
