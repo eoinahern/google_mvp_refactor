@@ -42,6 +42,8 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
 	@BindView(R.id.add_task_title) TextView mTitle;
 	@BindView(R.id.add_task_description) TextView mDescription;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
