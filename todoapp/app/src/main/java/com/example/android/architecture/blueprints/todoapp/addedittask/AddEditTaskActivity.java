@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
@@ -31,21 +32,17 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 /**
  * Displays an add or edit task screen.
  */
-public class AddEditTaskActivity extends AppCompatActivity {
+public class AddEditTaskActivity extends BaseActivity {
 
     public static final int REQUEST_ADD_TASK = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addtask_act);
 
-        // Set up the toolbar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        setUpToolbar();
+		ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
 
         AddEditTaskFragment addEditTaskFragment =
                 (AddEditTaskFragment) getSupportFragmentManager().findFragmentById(
@@ -57,12 +54,12 @@ public class AddEditTaskActivity extends AppCompatActivity {
             addEditTaskFragment = AddEditTaskFragment.newInstance();
 
             if (getIntent().hasExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID)) {
-                actionBar.setTitle(R.string.edit_task);
+                ab.setTitle(R.string.edit_task);
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId);
                 addEditTaskFragment.setArguments(bundle);
             } else {
-                actionBar.setTitle(R.string.add_task);
+                ab.setTitle(R.string.add_task);
             }
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
@@ -78,7 +75,11 @@ public class AddEditTaskActivity extends AppCompatActivity {
         );
     }
 
-    @Override
+	@Override public int getChildLayout() {
+		return R.layout.addtask_act;
+	}
+
+	@Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;

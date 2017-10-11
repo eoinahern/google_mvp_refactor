@@ -43,7 +43,7 @@ android {
 
     // Remove mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if(variant.buildType.name.equals('release')
+        if (variant.buildType.name.equals('release')
                 && variant.getFlavors().get(0).name.equals('mock')) {
             variant.setIgnore(true);
         }
@@ -72,6 +72,7 @@ dependencies {
     compile "com.google.guava:guava:$rootProject.guavaVersion"
 
     // Dependencies for local unit tests
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
@@ -85,6 +86,10 @@ dependencies {
     androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Espresso UI Testing
     androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
