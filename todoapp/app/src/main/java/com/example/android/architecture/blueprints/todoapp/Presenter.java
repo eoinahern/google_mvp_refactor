@@ -16,5 +16,12 @@
 
 package com.example.android.architecture.blueprints.todoapp;
 
-public interface BaseView {
+public interface Presenter<T extends BaseView> {
+
+	void start();
+
+	void attachView(T view);
+
+	void detachView();
+
 }

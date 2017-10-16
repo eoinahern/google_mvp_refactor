@@ -34,6 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Main UI for the add task screen. Users can enter a task title and description.
+ * removed as not needed for refactor
  */
 public class AddEditTaskFragment extends Fragment implements AddEditTaskContract.View {
 
@@ -56,13 +57,13 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        //mPresenter.start();
     }
 
-    @Override
+   /* @Override
     public void setPresenter(@NonNull AddEditTaskContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-    }
+    }*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -113,8 +114,8 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         mDescription.setText(description);
     }
 
-    @Override
-    public boolean isActive() {
-        return isAdded();
-    }
+	@Override public boolean isActive() {
+		return false;
+	}
+
 }

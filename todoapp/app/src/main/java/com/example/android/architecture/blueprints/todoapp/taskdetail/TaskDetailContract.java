@@ -16,7 +16,6 @@
 
 package com.example.android.architecture.blueprints.todoapp.taskdetail;
 
-import com.example.android.architecture.blueprints.todoapp.BasePresenter;
 import com.example.android.architecture.blueprints.todoapp.BaseView;
 
 /**
@@ -24,7 +23,7 @@ import com.example.android.architecture.blueprints.todoapp.BaseView;
  */
 public interface TaskDetailContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
 
@@ -51,7 +50,7 @@ public interface TaskDetailContract {
         boolean isActive();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends com.example.android.architecture.blueprints.todoapp.Presenter {
 
         void editTask();
 

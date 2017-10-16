@@ -18,31 +18,30 @@ package com.example.android.architecture.blueprints.todoapp.addedittask;
 
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.example.android.architecture.blueprints.todoapp.App;
 import com.example.android.architecture.blueprints.todoapp.BaseActivity;
-import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Displays an add or edit task screen.
  */
-public class AddEditTaskActivity extends BaseActivity implements AddEditTaskContract.View {
+public class AddEditTaskActivity extends BaseActivity implements AddEditTaskView {
 
     public static final int REQUEST_ADD_TASK = 1;
 	@BindView(R.id.add_task_title) TextView mTitle;
 	@BindView(R.id.add_task_description) TextView mDescription;
+	@BindView(R.id.fab_edit_task_done) FloatingActionButton fab;
 
 	@Inject AddEditTaskPresenter presenter;
 
@@ -55,6 +54,7 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
         ab.setDisplayShowHomeEnabled(true);
         setTitleText();
 
+        presenter.attachView(this);
 
         //fragments have to go
 
@@ -95,7 +95,7 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
 	}
 
 	@Override public void inject() {
-
+		App.get(this).getApplicationComponent().plus(new AddEditTaskActivityComponent.AddEitTaskActivityModule(this)).inject(this);
 	}
 
 	private void setTitleText() {
@@ -119,13 +119,14 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
     }
 
 	@Override
-	public void setPresenter(AddEditTaskContract.Presenter presenter) {
-		//not required!!! presenter will be injected!!
-	}
-
-	@Override
 	public void showEmptyTaskError() {
 		Snackbar.make(mTitle, getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
+	}
+
+
+	@OnClick(R.id.fab_edit_task_done)
+	public void saveTask() {
+		presenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());
 	}
 
 	@Override
@@ -141,9 +142,5 @@ public class AddEditTaskActivity extends BaseActivity implements AddEditTaskCont
 	@Override
 	public void setDescription(String description) {
 		mDescription.setText(description);
-	}
-
-	@Override public boolean isActive() {
-		return false;
 	}
 }

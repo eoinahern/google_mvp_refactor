@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity;
@@ -37,7 +38,7 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 /**
  * Show statistics for tasks.
  */
-public class StatisticsActivity extends AppCompatActivity {
+public class StatisticsActivity extends BaseActivity implements StatisticsView {
 
     private DrawerLayout mDrawerLayout;
 
@@ -71,12 +72,22 @@ public class StatisticsActivity extends AppCompatActivity {
                     statisticsFragment, R.id.contentFrame);
         }
 
-        new StatisticsPresenter(Injection.provideUseCaseHandler(),
+        /*new StatisticsPresenter(Injection.provideUseCaseHandler(),
                 statisticsFragment,
-                Injection.provideGetStatistics(getApplicationContext()));
+                Injection.provideGetStatistics(getApplicationContext()));*/
     }
 
-    @Override
+	@Override
+	public int getChildLayout() {
+		return 0;
+	}
+
+	@Override
+	public void inject() {
+
+	}
+
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -118,4 +129,20 @@ public class StatisticsActivity extends AppCompatActivity {
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
     }
+
+	@Override public void setProgressIndicator(boolean active) {
+
+	}
+
+	@Override public void showStatistics(int numberOfIncompleteTasks, int numberOfCompletedTasks) {
+
+	}
+
+	@Override public void showLoadingStatisticsError() {
+
+	}
+
+	@Override public boolean isActive() {
+		return false;
+	}
 }

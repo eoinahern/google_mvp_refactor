@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 
 import com.example.android.architecture.blueprints.todoapp.BaseView;
 import com.example.android.architecture.blueprints.todoapp.tasks.domain.model.Task;
-import com.example.android.architecture.blueprints.todoapp.BasePresenter;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import java.util.List;
  */
 public interface TasksContract {
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView {
 
         void setLoadingIndicator(boolean active);
 
@@ -66,7 +65,7 @@ public interface TasksContract {
         void showFilteringPopUpMenu();
     }
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends com.example.android.architecture.blueprints.todoapp.Presenter {
 
         void result(int requestCode, int resultCode);
 

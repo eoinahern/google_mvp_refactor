@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Main UI for the statistics screen.
  */
-public class StatisticsFragment extends Fragment implements StatisticsContract.View {
+public class StatisticsFragment extends Fragment implements StatisticsView {
 
     private TextView mStatisticsTV;
 
@@ -42,10 +42,10 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
         return new StatisticsFragment();
     }
 
-    @Override
+    /*@Override
     public void setPresenter(@NonNull StatisticsContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-    }
+    }*/
 
     @Nullable
     @Override

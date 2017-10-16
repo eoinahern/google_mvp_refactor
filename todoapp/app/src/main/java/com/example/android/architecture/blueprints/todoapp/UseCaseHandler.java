@@ -17,16 +17,27 @@
 package com.example.android.architecture.blueprints.todoapp;
 
 
+import android.util.Log;
+
+import com.example.android.architecture.blueprints.todoapp.DI.annotation.scope.PerScreen;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
+
+import javax.inject.Inject;
 
 /**
  * Runs {@link UseCase}s using a {@link UseCaseScheduler}.
  */
+
+@PerScreen
 public class UseCaseHandler {
 
     private static UseCaseHandler INSTANCE;
+	private UseCaseScheduler mUseCaseScheduler;
 
-    private final UseCaseScheduler mUseCaseScheduler;
+	@Inject
+    public UseCaseHandler() {
+		Log.d("use case", "empty scheduler!");
+	}
 
     public UseCaseHandler(UseCaseScheduler useCaseScheduler) {
         mUseCaseScheduler = useCaseScheduler;
