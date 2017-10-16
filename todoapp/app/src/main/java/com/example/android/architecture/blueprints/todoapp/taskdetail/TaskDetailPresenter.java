@@ -19,6 +19,7 @@ package com.example.android.architecture.blueprints.todoapp.taskdetail;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.android.architecture.blueprints.todoapp.BasePresenter;
 import com.example.android.architecture.blueprints.todoapp.UseCase;
 import com.example.android.architecture.blueprints.todoapp.UseCaseHandler;
 import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.DeleteTask;
@@ -34,7 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Listens to user actions from the UI ({@link TaskDetailFragment}), retrieves the data and updates
  * the UI as required.
  */
-public class TaskDetailPresenter implements TaskDetailContract.Presenter {
+public class TaskDetailPresenter extends BasePresenter<TaskDetailView> {
 
     private final TaskDetailContract.View mTaskDetailView;
     private final UseCaseHandler mUseCaseHandler;
@@ -101,7 +102,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
                 });
     }
 
-    @Override
+    //@Override
     public void editTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
@@ -110,7 +111,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mTaskDetailView.showEditTask(mTaskId);
     }
 
-    @Override
+    //@Override
     public void deleteTask() {
         mUseCaseHandler.execute(mDeleteTask, new DeleteTask.RequestValues(mTaskId),
                 new UseCase.UseCaseCallback<DeleteTask.ResponseValue>() {
@@ -126,7 +127,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
                 });
     }
 
-    @Override
+    //@Override
     public void completeTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
@@ -147,7 +148,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
                 });
     }
 
-    @Override
+    //@Override
     public void activateTask() {
         if (Strings.isNullOrEmpty(mTaskId)) {
             mTaskDetailView.showMissingTask();
