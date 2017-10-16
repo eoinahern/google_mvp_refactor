@@ -60,7 +60,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter {
         mCompleteTask = checkNotNull(completeTask, "completeTask cannot be null!");
         mActivateTask = checkNotNull(activateTask, "activateTask cannot be null!");
         mDeleteTask = checkNotNull(deleteTask, "deleteTask cannot be null!");
-        mTaskDetailView.setPresenter(this);
+        //mTaskDetailView.setPresenter(this);
     }
 
     @Override

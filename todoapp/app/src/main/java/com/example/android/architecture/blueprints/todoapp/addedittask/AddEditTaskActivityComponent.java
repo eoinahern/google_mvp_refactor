@@ -6,6 +6,8 @@ import com.example.android.architecture.blueprints.todoapp.DI.annotation.scope.P
 import com.example.android.architecture.blueprints.todoapp.DI.components.BaseActivityComponent;
 import com.example.android.architecture.blueprints.todoapp.DI.modules.BaseActivityModule;
 import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.GetTask;
+import com.example.android.architecture.blueprints.todoapp.addedittask.domain.usecase.SaveTask;
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,9 +27,14 @@ public interface AddEditTaskActivityComponent extends BaseActivityComponent<AddE
 
 		@Provides
 		@PerScreen
-		public GetTask getTask() {
+		public GetTask getTask(TasksRepository tasksRepository) {
+			return new GetTask(tasksRepository);
+		}
 
-			return new GetTask(cont);
+		@Provides
+		@PerScreen
+		public SaveTask getSaveTask(TasksRepository tasksRepository) {
+			return new SaveTask(tasksRepository);
 		}
 	}
 }
