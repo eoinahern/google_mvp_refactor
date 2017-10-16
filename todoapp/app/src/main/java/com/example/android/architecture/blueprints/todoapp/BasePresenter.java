@@ -10,7 +10,7 @@ public class BasePresenter<T extends BaseView> implements Presenter<T> {
 	}
 
 	@Override
-	public void attachView(T mvpView) {
+	public void attachView(T view) {
 		this.view = view;
 	}
 

@@ -52,16 +52,17 @@ public class AddEditTaskPresenter extends BasePresenter<AddEditTaskView> {
 
     /**
      * Creates a presenter for the add/edit view.
-     *
-     * @param taskId      ID of the task to edit or null for a new task
+     * task id will be passed in a different manner!!
      */
 
     @Inject
-    public AddEditTaskPresenter(@NonNull UseCaseHandler useCaseHandler, @Nullable String taskId,
+    public AddEditTaskPresenter(@NonNull UseCaseHandler useCaseHandler,
 								@NonNull GetTask getTask,
 								@NonNull SaveTask saveTask) {
         mUseCaseHandler = checkNotNull(useCaseHandler, "useCaseHandler cannot be null!");
-        mTaskId = taskId;
+
+        //set task id different way!!!
+        //mTaskId = taskId;
         mGetTask = checkNotNull(getTask, "getTask cannot be null!");
         mSaveTask = checkNotNull(saveTask, "saveTask cannot be null!");
 
