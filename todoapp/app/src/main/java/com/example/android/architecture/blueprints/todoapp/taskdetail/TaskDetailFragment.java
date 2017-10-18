@@ -44,7 +44,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Main UI for the task detail screen.
  */
+
+//todo: rermove TaskDetailFragment
 public class TaskDetailFragment extends Fragment implements TaskDetailContract.View {
+
+
 
     @NonNull
     private static final String ARGUMENT_TASK_ID = "TASK_ID";
@@ -98,10 +102,12 @@ public class TaskDetailFragment extends Fragment implements TaskDetailContract.V
         return root;
     }
 
-    @Override
+
+
+    /*@Override
     public void setPresenter(@NonNull TaskDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

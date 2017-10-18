@@ -16,8 +16,5 @@
 
 package com.example.android.architecture.blueprints.todoapp;
 
-public interface BaseView<T extends BasePresenter> {
-
-    void setPresenter(T presenter);
-
+public interface BaseView {
 }

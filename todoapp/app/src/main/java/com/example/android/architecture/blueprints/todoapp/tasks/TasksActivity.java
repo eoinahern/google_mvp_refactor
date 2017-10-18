@@ -28,114 +28,196 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.android.architecture.blueprints.todoapp.App;
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity;
+import com.example.android.architecture.blueprints.todoapp.tasks.domain.model.Task;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
-public class TasksActivity extends AppCompatActivity {
+import java.util.List;
 
-    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
+import javax.inject.Inject;
 
-    private DrawerLayout mDrawerLayout;
+public class TasksActivity extends BaseActivity implements TasksView {
 
-    private TasksPresenter mTasksPresenter;
+	private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tasks_act);
+	private DrawerLayout mDrawerLayout;
 
-        // Set up the toolbar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
+	@Inject TasksPresenter mTasksPresenter;
 
-        // Set up the navigation drawer.
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
-        }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setUpToolbar();
 
-        TasksFragment tasksFragment =
-                (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (tasksFragment == null) {
-            // Create the fragment
-            tasksFragment = TasksFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
-        }
 
-        // Create the presenter
-        mTasksPresenter = new TasksPresenter(
-                Injection.provideUseCaseHandler(),
-                tasksFragment,
-                Injection.provideGetTasks(getApplicationContext()),
-                Injection.provideCompleteTasks(getApplicationContext()),
-                Injection.provideActivateTask(getApplicationContext()),
-                Injection.provideClearCompleteTasks(getApplicationContext())
-                );
+		// Set up the navigation drawer.
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout.setStatusBarBackground(R.color.colorPrimaryDark);
+		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		if (navigationView != null) {
+			setupDrawerContent(navigationView);
+		}
 
-        // Load previously saved state, if available.
-        if (savedInstanceState != null) {
-            TasksFilterType currentFiltering =
-                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-            mTasksPresenter.setFiltering(currentFiltering);
-        }
-    }
+		TasksFragment tasksFragment =
+				(TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+		if (tasksFragment == null) {
+			// Create the fragment
+			tasksFragment = TasksFragment.newInstance();
+			ActivityUtils.addFragmentToActivity(
+					getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
+		}
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
+		// Create the presenter
+		mTasksPresenter = new TasksPresenter(
+				Injection.provideUseCaseHandler(),
+				tasksFragment,
+				Injection.provideGetTasks(getApplicationContext()),
+				Injection.provideCompleteTasks(getApplicationContext()),
+				Injection.provideActivateTask(getApplicationContext()),
+				Injection.provideClearCompleteTasks(getApplicationContext())
+		);
 
-        super.onSaveInstanceState(outState);
-    }
+		// Load previously saved state, if available.
+		if (savedInstanceState != null) {
+			TasksFilterType currentFiltering =
+					(TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
+			mTasksPresenter.setFiltering(currentFiltering);
+		}
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // Open the navigation drawer when the home icon is selected from the toolbar.
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	@Override
+	public int getChildLayout() {
+		return R.layout.tasks_act;
+	}
 
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.list_navigation_menu_item:
-                                // Do nothing, we're already on that screen
-                                break;
-                            case R.id.statistics_navigation_menu_item:
-                                Intent intent =
-                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                break;
-                            default:
-                                break;
-                        }
-                        // Close the navigation drawer when an item is selected.
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
-    }
+	@Override
+	public void inject() {
+		App.get(this).getApplicationComponent().plus(new TasksActivityComponent.TasksActivityModule(this)).inject(this);
+	}
 
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
-    }
+	@Override
+	public void setUpToolbar() {
+		super.setUpToolbar();
+		ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+		ab.setDisplayHomeAsUpEnabled(true);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
+
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				// Open the navigation drawer when the home icon is selected from the toolbar.
+				mDrawerLayout.openDrawer(GravityCompat.START);
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void setupDrawerContent(NavigationView navigationView) {
+		navigationView.setNavigationItemSelectedListener(
+				new NavigationView.OnNavigationItemSelectedListener() {
+					@Override
+					public boolean onNavigationItemSelected(MenuItem menuItem) {
+						switch (menuItem.getItemId()) {
+							case R.id.list_navigation_menu_item:
+								// Do nothing, we're already on that screen
+								break;
+							case R.id.statistics_navigation_menu_item:
+								Intent intent =
+										new Intent(TasksActivity.this, StatisticsActivity.class);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+										| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+								startActivity(intent);
+								break;
+							default:
+								break;
+						}
+						// Close the navigation drawer when an item is selected.
+						menuItem.setChecked(true);
+						mDrawerLayout.closeDrawers();
+						return true;
+					}
+				});
+	}
+
+	@VisibleForTesting
+	public IdlingResource getCountingIdlingResource() {
+		return EspressoIdlingResource.getIdlingResource();
+	}
+
+	@Override public void setLoadingIndicator(boolean active) {
+
+	}
+
+	@Override public void showTasks(List<Task> tasks) {
+
+	}
+
+	@Override public void showAddTask() {
+
+	}
+
+	@Override public void showTaskDetailsUi(String taskId) {
+
+	}
+
+	@Override public void showTaskMarkedComplete() {
+
+	}
+
+	@Override public void showTaskMarkedActive() {
+
+	}
+
+	@Override public void showCompletedTasksCleared() {
+
+	}
+
+	@Override public void showLoadingTasksError() {
+
+	}
+
+	@Override public void showNoTasks() {
+
+	}
+
+	@Override public void showActiveFilterLabel() {
+
+	}
+
+	@Override public void showCompletedFilterLabel() {
+
+	}
+
+	@Override public void showAllFilterLabel() {
+
+	}
+
+	@Override public void showNoActiveTasks() {
+
+	}
+
+	@Override public void showNoCompletedTasks() {
+
+	}
+
+	@Override public void showSuccessfullySavedMessage() {
+
+	}
+
+	@Override public boolean isActive() {
+		return false;
+	}
 }

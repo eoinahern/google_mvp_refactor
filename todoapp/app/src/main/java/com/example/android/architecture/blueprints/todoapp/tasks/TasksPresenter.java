@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 
+import com.example.android.architecture.blueprints.todoapp.BaseView;
 import com.example.android.architecture.blueprints.todoapp.UseCase;
 import com.example.android.architecture.blueprints.todoapp.UseCaseHandler;
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity;
@@ -65,7 +66,7 @@ public class TasksPresenter implements TasksContract.Presenter {
                 "clearCompleteTasks cannot be null!");
 
 
-        mTasksView.setPresenter(this);
+        //mTasksView.setPresenter(this);
     }
 
     @Override
@@ -73,7 +74,15 @@ public class TasksPresenter implements TasksContract.Presenter {
         loadTasks(false);
     }
 
-    @Override
+	@Override public void attachView(BaseView view) {
+
+	}
+
+	@Override public void detachView() {
+
+	}
+
+	@Override
     public void result(int requestCode, int resultCode) {
         // If a task was successfully added, show snackbar
         if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode

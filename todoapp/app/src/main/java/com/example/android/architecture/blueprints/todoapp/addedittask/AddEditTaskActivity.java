@@ -18,67 +18,96 @@ package com.example.android.architecture.blueprints.todoapp.addedittask;
 
 import android.os.Bundle;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.test.espresso.IdlingResource;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
-import com.example.android.architecture.blueprints.todoapp.Injection;
+import com.example.android.architecture.blueprints.todoapp.App;
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Displays an add or edit task screen.
  */
-public class AddEditTaskActivity extends AppCompatActivity {
+public class AddEditTaskActivity extends BaseActivity implements AddEditTaskView {
 
     public static final int REQUEST_ADD_TASK = 1;
+	@BindView(R.id.add_task_title) TextView mTitle;
+	@BindView(R.id.add_task_description) TextView mDescription;
+	@BindView(R.id.fab_edit_task_done) FloatingActionButton fab;
 
-    @Override
+	@Inject AddEditTaskPresenter presenter;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.addtask_act);
 
-        // Set up the toolbar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        setUpToolbar();
+		ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayShowHomeEnabled(true);
+        setTitleText();
 
-        AddEditTaskFragment addEditTaskFragment =
+        presenter.attachView(this);
+
+        //fragments have to go
+
+        /*AddEditTaskFragment addEditTaskFragment =
                 (AddEditTaskFragment) getSupportFragmentManager().findFragmentById(
-                        R.id.contentFrame);
+                        R.id.contentFrame);*/
 
-        String taskId = getIntent().getStringExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID);
+        /*String taskId = getIntent().getStringExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID);
 
         if (addEditTaskFragment == null) {
             addEditTaskFragment = AddEditTaskFragment.newInstance();
 
             if (getIntent().hasExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID)) {
-                actionBar.setTitle(R.string.edit_task);
+                ab.setTitle(R.string.edit_task);
                 Bundle bundle = new Bundle();
                 bundle.putString(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID, taskId);
                 addEditTaskFragment.setArguments(bundle);
             } else {
-                actionBar.setTitle(R.string.add_task);
-            }
+                ab.setTitle(R.string.add_task);
+            }*/
 
-            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+           /* ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     addEditTaskFragment, R.id.contentFrame);
-        }
+        }*/
 
-        // Create the presenter
-        new AddEditTaskPresenter(Injection.provideUseCaseHandler(),
+        // todo: instance of presenter required in class now. injected!!!
+        /*new AddEditTaskPresenter(Injection.provideUseCaseHandler(),
                 taskId,
                 addEditTaskFragment,
                 Injection.provideGetTask(getApplicationContext()),
                 Injection.provideSaveTask(getApplicationContext())
-        );
+        );*/
     }
 
-    @Override
+	@Override
+	public int getChildLayout() {
+		return R.layout.addtask_act;
+	}
+
+	@Override public void inject() {
+		App.get(this).getApplicationComponent().plus(new AddEditTaskActivityComponent.AddEitTaskActivityModule(this)).inject(this);
+	}
+
+	private void setTitleText() {
+
+    	if (getIntent().hasExtra(AddEditTaskFragment.ARGUMENT_EDIT_TASK_ID)) {
+				ab.setTitle(R.string.edit_task);
+			} else {
+				ab.setTitle(R.string.add_task);
+			}
+    }
+
+	@Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
@@ -88,4 +117,30 @@ public class AddEditTaskActivity extends AppCompatActivity {
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
     }
+
+	@Override
+	public void showEmptyTaskError() {
+		Snackbar.make(mTitle, getString(R.string.empty_task_message), Snackbar.LENGTH_LONG).show();
+	}
+
+
+	@OnClick(R.id.fab_edit_task_done)
+	public void saveTask() {
+		presenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());
+	}
+
+	@Override
+	public void showTasksList() {
+
+	}
+
+	@Override
+	public void setTitle(String title) {
+		mTitle.setText(title);
+	}
+
+	@Override
+	public void setDescription(String description) {
+		mDescription.setText(description);
+	}
 }

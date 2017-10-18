@@ -31,7 +31,7 @@ import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingRe
 /**
  * Displays task details screen.
  */
-public class TaskDetailActivity extends AppCompatActivity {
+public class TaskDetailActivity extends AppCompatActivity implements TaskDetailView {
 
     public static final String EXTRA_TASK_ID = "TASK_ID";
 
@@ -77,4 +77,52 @@ public class TaskDetailActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+	@Override public void setLoadingIndicator(boolean active) {
+
+	}
+
+	@Override public void showMissingTask() {
+
+	}
+
+	@Override public void hideTitle() {
+
+	}
+
+	@Override public void showTitle(String title) {
+
+	}
+
+	@Override public void hideDescription() {
+
+	}
+
+	@Override public void showDescription(String description) {
+
+	}
+
+	@Override public void showCompletionStatus(boolean complete) {
+
+	}
+
+	@Override public void showEditTask(String taskId) {
+
+	}
+
+	@Override public void showTaskDeleted() {
+
+	}
+
+	@Override public void showTaskMarkedComplete() {
+
+	}
+
+	@Override public void showTaskMarkedActive() {
+
+	}
+
+	@Override public boolean isActive() {
+		return false;
+	}
 }

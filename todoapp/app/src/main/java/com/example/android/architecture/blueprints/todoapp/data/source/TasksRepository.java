@@ -29,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Singleton;
+
 /**
  * Concrete implementation to load tasks from the data sources into a cache.
  * <p>
@@ -36,6 +38,7 @@ import java.util.Map;
  * obtained from the server, by using the remote data source only if the local database doesn't
  * exist or is empty.
  */
+
 public class TasksRepository implements TasksDataSource {
 
     private static TasksRepository INSTANCE = null;

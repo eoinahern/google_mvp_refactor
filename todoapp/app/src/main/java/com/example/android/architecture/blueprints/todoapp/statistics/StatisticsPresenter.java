@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import android.support.annotation.NonNull;
 
+import com.example.android.architecture.blueprints.todoapp.BasePresenter;
+import com.example.android.architecture.blueprints.todoapp.BaseView;
 import com.example.android.architecture.blueprints.todoapp.UseCase;
 import com.example.android.architecture.blueprints.todoapp.UseCaseHandler;
 import com.example.android.architecture.blueprints.todoapp.statistics.domain.usecase.GetStatistics;
@@ -29,9 +31,9 @@ import com.example.android.architecture.blueprints.todoapp.statistics.domain.mod
  * Listens to user actions from the UI ({@link StatisticsFragment}), retrieves the data and updates
  * the UI as required.
  */
-public class StatisticsPresenter implements StatisticsContract.Presenter {
+public class StatisticsPresenter extends BasePresenter<StatisticsView> {
 
-    private final StatisticsContract.View mStatisticsView;
+   /* private final StatisticsContract.View mStatisticsView;
     private final UseCaseHandler mUseCaseHandler;
     private final GetStatistics mGetStatistics;
 
@@ -43,7 +45,6 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
         mStatisticsView = checkNotNull(statisticsView, "StatisticsView cannot be null!");
         mGetStatistics = checkNotNull(getStatistics,"getStatistics cannot be null!");
 
-        mStatisticsView.setPresenter(this);
     }
 
     @Override
@@ -51,7 +52,15 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
         loadStatistics();
     }
 
-    private void loadStatistics() {
+	@Override public void attachView(BaseView view) {
+
+	}
+
+	@Override public void detachView() {
+
+	}
+
+	private void loadStatistics() {
         mStatisticsView.setProgressIndicator(true);
 
         mUseCaseHandler.execute(mGetStatistics, new GetStatistics.RequestValues(),
@@ -77,5 +86,5 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
                 mStatisticsView.showLoadingStatisticsError();
             }
         });
-    }
+    }*/
 }
