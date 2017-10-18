@@ -5,11 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-	protected Toolbar toolbar;
+	protected @BindView(R.id.toolbar) Toolbar toolbar;
 	protected ActionBar ab;
 
 	@Override
@@ -27,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	protected void setUpToolbar() {
 
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		//toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		ab = getSupportActionBar();
 	}

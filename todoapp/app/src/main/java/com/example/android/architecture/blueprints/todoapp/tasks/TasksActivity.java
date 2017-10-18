@@ -28,13 +28,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.android.architecture.blueprints.todoapp.BaseActivity;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity;
+import com.example.android.architecture.blueprints.todoapp.tasks.domain.model.Task;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
 import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 
-public class TasksActivity extends AppCompatActivity {
+import java.util.List;
+
+public class TasksActivity extends BaseActivity implements TasksView {
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
@@ -45,14 +49,8 @@ public class TasksActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tasks_act);
+		setUpToolbar();
 
-        // Set up the toolbar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
 
         // Set up the navigation drawer.
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -89,7 +87,24 @@ public class TasksActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+	@Override
+	public int getChildLayout() {
+		return R.layout.tasks_act;
+	}
+
+	@Override
+	public void inject() {
+
+	}
+
+	@Override
+	public void setUpToolbar() {
+    	super.setUpToolbar();
+		ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+		ab.setDisplayHomeAsUpEnabled(true);
+	}
+
+	@Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
 
@@ -138,4 +153,68 @@ public class TasksActivity extends AppCompatActivity {
     public IdlingResource getCountingIdlingResource() {
         return EspressoIdlingResource.getIdlingResource();
     }
+
+	@Override public void setLoadingIndicator(boolean active) {
+
+	}
+
+	@Override public void showTasks(List<Task> tasks) {
+
+	}
+
+	@Override public void showAddTask() {
+
+	}
+
+	@Override public void showTaskDetailsUi(String taskId) {
+
+	}
+
+	@Override public void showTaskMarkedComplete() {
+
+	}
+
+	@Override public void showTaskMarkedActive() {
+
+	}
+
+	@Override public void showCompletedTasksCleared() {
+
+	}
+
+	@Override public void showLoadingTasksError() {
+
+	}
+
+	@Override public void showNoTasks() {
+
+	}
+
+	@Override public void showActiveFilterLabel() {
+
+	}
+
+	@Override public void showCompletedFilterLabel() {
+
+	}
+
+	@Override public void showAllFilterLabel() {
+
+	}
+
+	@Override public void showNoActiveTasks() {
+
+	}
+
+	@Override public void showNoCompletedTasks() {
+
+	}
+
+	@Override public void showSuccessfullySavedMessage() {
+
+	}
+
+	@Override public boolean isActive() {
+		return false;
+	}
 }
